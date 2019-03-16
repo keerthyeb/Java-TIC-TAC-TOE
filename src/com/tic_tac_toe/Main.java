@@ -13,31 +13,43 @@ public class Main {
         System.out.println("Enter the 2nd player name");
         String player2 = scanner.nextLine();
         game.addPlayer(player2, "O");
-        Integer numberOfTurn = 0;
         String currentPlayer = game.getCurrentPlayer();
+        Integer move;
 
         boolean hasWon = game.hasWon(player1);
         while (!hasWon) {
             game.printBoard();
-            numberOfTurn++;
             System.out.println(currentPlayer + "'s turn \n" + "Enter the position to play");
-            Integer move = scanner.nextInt();
+
+            while (!scanner.hasNextInt()) {
+                printInvalidMove();
+                Object invalidMove = scanner.next();
+            }
+
+            move = scanner.nextInt();
             boolean isValidMove = game.addMove(currentPlayer, move);
+
             if (!isValidMove) {
-                System.out.println("Invalid Move try again\n");
+                printInvalidMove();
                 continue;
             }
-            currentPlayer = game.getCurrentPlayer();
+            
             hasWon = game.hasWon(currentPlayer);
-            if (numberOfTurn == 9 && !hasWon) break;
+            if (hasWon) printResult(game);
+            currentPlayer = game.getCurrentPlayer();
         }
-        if (hasWon) {
-            game.printBoard();
-            System.out.println(game.getWinner() + "has won the game");
-            System.exit(0);
-        }
-        System.out.println("Game come to draw");
 
+        System.out.println("Game come to draw");
+    }
+
+    public static void printResult(Game game) {
+        game.printBoard();
+        System.out.println(game.getWinner() + " has won the game");
+        System.exit(0);
+    }
+
+    public static void printInvalidMove() {
+        System.out.println("Invalid Move try again");
 
     }
 }
