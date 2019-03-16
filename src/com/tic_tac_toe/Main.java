@@ -33,7 +33,6 @@ public class Main {
                 printInvalidMove();
                 continue;
             }
-            
             hasWon = game.hasWon(currentPlayer);
             if (hasWon) printResult(game);
             currentPlayer = game.getCurrentPlayer();

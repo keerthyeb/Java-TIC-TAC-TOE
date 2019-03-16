@@ -35,8 +35,9 @@ public class Game {
 
     public boolean addMove(String playerName, Integer position) {
         Player player = getPlayer(playerName);
-        player.addMove(position);
-        return updateboard(position - 1, player.getSymbol());
+        boolean isvalidMove =  updateboard(position - 1, player.getSymbol());
+        if(isvalidMove)player.addMove(position);
+        return  isvalidMove;
     }
 
     public Player getPlayer(String playerName) {
@@ -54,7 +55,8 @@ public class Game {
     public boolean hasWon(String playerName) {
         Player player = getPlayer(playerName);
         List<Integer> currentPlayerMoves = player.getMoves();
-        boolean hasWon = winningCombinations.stream().anyMatch(combination -> combination.stream().allMatch(move -> currentPlayerMoves.contains(move)));
+        boolean hasWon = winningCombinations.stream().anyMatch(combination ->
+                currentPlayerMoves.containsAll(combination));
         if (hasWon) {
             this.winner = playerName;
             return true;

@@ -14,9 +14,14 @@ public class Board {
     }
 
     public boolean replaceSymbol(int position, String symbol) {
-        if (!board.get(position).equals(" ")) return false;
-        board.set(position, symbol);
-        return true;
+        try {
+            if (!board.get(position).equals(" ")) return false;
+            board.set(position, symbol);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
     }
 
     public List<String> getBoard() {
