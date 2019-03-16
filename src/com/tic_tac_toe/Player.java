@@ -26,7 +26,7 @@ public class Player {
         return moves;
     }
 
-    public void addMove(Integer position){
+    public void addMove(Integer position) {
         moves.add(position);
     }
 }

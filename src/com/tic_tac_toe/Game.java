@@ -13,9 +13,9 @@ public class Game {
 
     public Game() {
         board = new Board();
-        winningCombinations  = new ArrayList<>(8);
-        players  = new ArrayList<>();
-        currentPlayerIndex  = 0;
+        winningCombinations = new ArrayList<>(8);
+        players = new ArrayList<>();
+        currentPlayerIndex = 0;
         board = new Board();
         winner = null;
         winningCombinations.add(Arrays.asList(1, 2, 3));
@@ -33,10 +33,10 @@ public class Game {
         players.add(player);
     }
 
-    public void addMove(String playerName, Integer position) {
+    public boolean addMove(String playerName, Integer position) {
         Player player = getPlayer(playerName);
         player.addMove(position);
-        updateboard(position-1,player.getSymbol());
+        return updateboard(position - 1, player.getSymbol());
     }
 
     public Player getPlayer(String playerName) {
@@ -45,28 +45,29 @@ public class Game {
         return null;
     }
 
-    public String getCurrentPlayer(){
+    public String getCurrentPlayer() {
         String currentPlayer = players.get(currentPlayerIndex).getName();
         currentPlayerIndex = Math.abs(currentPlayerIndex - 1);
-        return  currentPlayer;
+        return currentPlayer;
     }
 
-    public boolean hasWon(String playerName){
+    public boolean hasWon(String playerName) {
         Player player = getPlayer(playerName);
         List<Integer> currentPlayerMoves = player.getMoves();
-        boolean hasWon = winningCombinations.stream().anyMatch(combination-> combination.stream().allMatch(move ->currentPlayerMoves.contains(move)));
-        if(hasWon){
+        boolean hasWon = winningCombinations.stream().anyMatch(combination -> combination.stream().allMatch(move -> currentPlayerMoves.contains(move)));
+        if (hasWon) {
             this.winner = playerName;
             return true;
         }
         return false;
     }
 
-    private void updateboard(Integer position, String symbol){
-        board.replaceSymbol(position,symbol);
+    private boolean updateboard(Integer position, String symbol) {
+        return board.replaceSymbol(position, symbol);
+
     }
 
-    public void printBoard(){
+    public void printBoard() {
         board.printBoard();
     }
 

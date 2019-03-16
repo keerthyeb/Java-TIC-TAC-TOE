@@ -9,24 +9,29 @@ public class Main {
         System.out.println("TIC-TAC-TOE\n");
         System.out.println("Enter the 1st player name");
         String player1 = scanner.nextLine();
-        game.addPlayer(player1,"X");
+        game.addPlayer(player1, "X");
         System.out.println("Enter the 2nd player name");
         String player2 = scanner.nextLine();
-        game.addPlayer(player2,"O");
+        game.addPlayer(player2, "O");
         Integer numberOfTurn = 0;
+        String currentPlayer = game.getCurrentPlayer();
 
         boolean hasWon = game.hasWon(player1);
-        while(!hasWon){
+        while (!hasWon) {
             game.printBoard();
             numberOfTurn++;
-            String currentPlayer = game.getCurrentPlayer();
-            System.out.println( currentPlayer + "'s turn \n" + "Enter the position to play");
+            System.out.println(currentPlayer + "'s turn \n" + "Enter the position to play");
             Integer move = scanner.nextInt();
-            game.addMove(currentPlayer,move);
+            boolean isValidMove = game.addMove(currentPlayer, move);
+            if (!isValidMove) {
+                System.out.println("Invalid Move try again\n");
+                continue;
+            }
+            currentPlayer = game.getCurrentPlayer();
             hasWon = game.hasWon(currentPlayer);
-            if(numberOfTurn == 9 && !hasWon) break;
+            if (numberOfTurn == 9 && !hasWon) break;
         }
-        if(hasWon) {
+        if (hasWon) {
             game.printBoard();
             System.out.println(game.getWinner() + "has won the game");
             System.exit(0);

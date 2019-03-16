@@ -4,27 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
-    private List<String > board;
+    private List<String> board;
 
     public Board() {
         board = new ArrayList<>();
-        for(int i =0; i<= 8; i++){
+        for (int i = 0; i <= 8; i++) {
             board.add(" ");
         }
     }
 
-    public void replaceSymbol(int position,String symbol){
-        board.set(position,symbol);
+    public boolean replaceSymbol(int position, String symbol) {
+        if (!board.get(position).equals(" ")) return false;
+        board.set(position, symbol);
+        return true;
     }
 
     public List<String> getBoard() {
         return board;
     }
 
-    public void printBoard(){
+    public void printBoard() {
         System.out.println("TIC-TAC-TOE");
-        System.out.println(board.get(0)+" | "+board.get(1)+" | "+board.get(2));
-        System.out.println(board.get(3)+" | "+board.get(4)+" | "+board.get(5));
-        System.out.println(board.get(6)+" | "+board.get(7)+" | "+board.get(8) + "\n");
+        System.out.println(board.get(0) + " | " + board.get(1) + " | " + board.get(2));
+        System.out.println(board.get(3) + " | " + board.get(4) + " | " + board.get(5));
+        System.out.println(board.get(6) + " | " + board.get(7) + " | " + board.get(8) + "\n");
     }
 }
