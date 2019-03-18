@@ -14,19 +14,20 @@ public class Player {
         moves = new ArrayList<>();
     }
 
-    public String getName() {
-        return name;
-    }
-
     public String getSymbol() {
         return symbol;
     }
 
-    public List<Integer> getMoves() {
-        return moves;
+    @Override
+    public String toString() {
+        return name;
     }
 
     public void addMove(Integer position) {
         moves.add(position);
+    }
+
+    public boolean hasWon(List<List> winningCombinations) {
+        return winningCombinations.stream().anyMatch(combination ->moves.containsAll(combination));
     }
 }

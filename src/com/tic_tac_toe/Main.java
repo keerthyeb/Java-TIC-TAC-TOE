@@ -6,49 +6,58 @@ public class Main {
     public static void main(String[] args) {
         Game game = new Game();
         Scanner scanner = new Scanner(System.in);
+
         System.out.println("TIC-TAC-TOE\n");
+
         System.out.println("Enter the 1st player name");
-        String player1 = scanner.nextLine();
-        game.addPlayer(player1, "X");
+        String playerName = scanner.nextLine();
+        Player player1 = new Player(playerName, "X");
+        game.addPlayer(player1);
+
         System.out.println("Enter the 2nd player name");
-        String player2 = scanner.nextLine();
-        game.addPlayer(player2, "O");
-        String currentPlayer = game.getCurrentPlayer();
+        playerName = scanner.nextLine();
+        Player player2 = new Player(playerName, "O");
+        game.addPlayer(player2);
+
+        Player currentPlayer = game.getCurrentPlayer();
         Integer move;
 
-        boolean hasWon = game.hasWon(player1);
-        while (!hasWon) {
+        boolean isFinished;
+        while (!game.isFinished()) {
             game.printBoard();
             System.out.println(currentPlayer + "'s turn \n" + "Enter the position to play");
 
             while (!scanner.hasNextInt()) {
                 printInvalidMove();
-                Object invalidMove = scanner.next();
+                scanner.nextLine();
             }
 
             move = scanner.nextInt();
-            boolean isValidMove = game.addMove(currentPlayer, move);
-
-            if (!isValidMove) {
+            if (!game.isValidMove(currentPlayer, move)) {
                 printInvalidMove();
                 continue;
             }
-            hasWon = game.hasWon(currentPlayer);
-            if (hasWon) printResult(game);
+
+            game.makeMove(currentPlayer, move);
+            isFinished = game.isFinished();
+            if (isFinished) printResult(game);
             currentPlayer = game.getCurrentPlayer();
         }
 
-        System.out.println("Game come to draw");
     }
 
     public static void printResult(Game game) {
         game.printBoard();
-        System.out.println(game.getWinner() + " has won the game");
-        System.exit(0);
+        Player player = game.getWinner();
+        if (player != null) {
+            System.out.println(game.getWinner() + " has won the game");
+            System.exit(0);
+        }
+        System.out.println("Game came to draw");
     }
 
     public static void printInvalidMove() {
-        System.out.println("Invalid Move try again");
+        System.out.println("Invalid Move try again\n");
 
     }
 }

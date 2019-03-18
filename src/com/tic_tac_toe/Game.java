@@ -9,7 +9,8 @@ public class Game {
     private List<Player> players;
     private Integer currentPlayerIndex;
     private Board board;
-    private String winner;
+    private Player winner;
+    private Player currentPlayer;
 
     public Game() {
         board = new Board();
@@ -28,40 +29,32 @@ public class Game {
         winningCombinations.add(Arrays.asList(3, 5, 7));
     }
 
-    public void addPlayer(String playername, String symbol) {
-        Player player = new Player(playername, symbol);
+    public void addPlayer(Player player) {
         players.add(player);
     }
 
-    public boolean addMove(String playerName, Integer position) {
-        Player player = getPlayer(playerName);
-        boolean isvalidMove =  updateboard(position - 1, player.getSymbol());
-        if(isvalidMove)player.addMove(position);
-        return  isvalidMove;
+    public boolean isValidMove(Player player,Integer position){
+        return updateboard(position-1,player.getSymbol());
     }
 
-    public Player getPlayer(String playerName) {
-        for (Player player : players)
-            if (player.getName().equals(playerName)) return player;
-        return null;
+    public void makeMove(Player player, Integer position) {
+         player.addMove(position);
     }
 
-    public String getCurrentPlayer() {
-        String currentPlayer = players.get(currentPlayerIndex).getName();
+    public Player getCurrentPlayer() {
+        this.currentPlayer = players.get(currentPlayerIndex);
         currentPlayerIndex = Math.abs(currentPlayerIndex - 1);
         return currentPlayer;
     }
 
-    public boolean hasWon(String playerName) {
-        Player player = getPlayer(playerName);
-        List<Integer> currentPlayerMoves = player.getMoves();
-        boolean hasWon = winningCombinations.stream().anyMatch(combination ->
-                currentPlayerMoves.containsAll(combination));
-        if (hasWon) {
-            this.winner = playerName;
-            return true;
-        }
-        return false;
+    public boolean isFinished() {
+        if (this.currentPlayer.hasWon(winningCombinations)) this.winner = currentPlayer;
+        boolean isFinished = this.currentPlayer.hasWon(winningCombinations) || isDraw();
+            return isFinished;
+    }
+
+    private boolean isDraw() {
+        return !(board.getBoard().contains(" "));
     }
 
     private boolean updateboard(Integer position, String symbol) {
@@ -73,7 +66,7 @@ public class Game {
         board.printBoard();
     }
 
-    public String getWinner() {
+    public Player getWinner() {
         return winner;
     }
 }
