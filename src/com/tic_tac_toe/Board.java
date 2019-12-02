@@ -8,7 +8,7 @@ public class Board {
 
     public Board() {
         board = new ArrayList<>();
-        for (int i = 0; i <= 8; i++) {
+        for (int index = 0; index <= 8; index++) {
             board.add(" ");
         }
     }
